@@ -10,14 +10,14 @@ client = MongoClient('localhost', 27017)
 db = client['skinsales']
 sales_collection = db['sales']
 
-@app.route('/skins', methods=['GET'])
+@app.route('/', methods=['GET'])
 def allSkins():
 	sales = list(sales_collection.find())
 	for sale in sales:
 		del sale['_id']
 	return json.dumps(sales)
 
-@app.route('/skins/championName/<string:champ_name>', methods=['GET'])
+@app.route('/championName/<string:champ_name>', methods=['GET'])
 def skinsByName(champ_name):
 	sale = sales_collection.find_one({'champion_name': champ_name})
 	if sale is None:
@@ -25,7 +25,7 @@ def skinsByName(champ_name):
 	del sale['_id']
 	return json.dumps(sale)
 
-@app.route('/skins/championId/<int:champ_id>', methods=['GET'])
+@app.route('/championId/<int:champ_id>', methods=['GET'])
 def skinsById(champ_id):
 	sale = sales_collection.find_one({'champion_id': champ_id})
 	if sale is None:
