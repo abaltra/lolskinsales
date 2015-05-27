@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>League of Legends current Skins Sales</title>
+	<meta name="author" content="Alejandro Baltra" />
+	<meta name="description" content="LoL current Skin Sales by Alejandro Baltra" />
+	<meta name="keywords"  content="api,league of legends,lol,skins,sales" />
+	<meta name="Resource-type" content="Document" />
+
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.pagepiling.css') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/site.css') }}" />
+	<link href='http://fonts.googleapis.com/css?family=Palanquin+Dark:400,600' rel='stylesheet' type='text/css'>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.pagepiling.min.js') }}"></script>
+	<script type="text/javascript">
+		var deleteLog = false;
+
+		$(document).ready(function() {
+	    	$('#pagepiling').pagepiling({
+	    		menu: '#menu',
+	    		anchors: ['page1', 'page2', 'page3'],
+	    		navigation: {
+		            'textColor': '#f2f2f2',
+		            'bulletsColor': '#ccc',
+		            'position': 'right',
+		            'tooltips': ['{{data[0].champion_name}}', '{{data[1].champion_name}}', '{{data[2].champion_name}}']
+		        }
+			});
+	    });
+    </script>
+
+    <style>
+    /*Had to put this here to set backgrounds in css :sadface*/
+    #section1{
+		background-image: url({{data[0].skin_splash_url}});
+	}
+	#section2{
+		background-image: url({{data[1].skin_splash_url}});
+		padding: 6% 0 0 0;
+	}
+	#section3{
+		background-image: url({{data[2].skin_splash_url}});
+		padding: 6% 0 0 0;
+	}
+
+    </style>
+
+</head>
+<body>
+
+
+	<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.lolskinsales.com" data-text="Current champion skin sales updated automatically!  ">Tweet</a>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+	<ul id="menu">
+		<li data-menuanchor="page1" class="active"><a href="#page1">{{data[0].champion_name}}</a></li>
+		<li data-menuanchor="page2"><a href="#page2">{{data[1].champion_name}}</a></li>
+		<li data-menuanchor="page3"><a href="#page3">{{data[2].champion_name}}</a></li>
+	</ul>
+
+	<div id="pagepiling">
+	    <div class="section" id="section1">
+	    	<div class="champData">
+	    		<h1> {{data[0].skin_name}} </h1>
+	    		<h2> Currently at {{data[0].new_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>, down from {{data[0].old_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>! </h2>
+	    	</div>
+	    </div>
+	    <div class="section" id="section2">
+	    	<div class="champData">
+	    		<h1> {{data[1].skin_name}} </h1>
+	    		<h2> Currently at {{data[1].new_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>, down from {{data[1].old_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>! </h2>
+	    	</div>
+	    </div>
+	    <div class="section" id="section3">
+	    	<div class="champData">
+	    		<h1> {{data[2].skin_name}} </h1>
+	    		<h2> Currently at {{data[2].new_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>, down from {{data[2].old_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>! </h2>
+	    	</div>
+	    </div>
+	</div>
+
+	
+
+<div id="infoMenu">
+	<p> The information is updated automatically as Riot updates it's NA sales pages. If you'd like to use the API, please refer to the <a href="https://github.com/abaltra/lolskinsales" target="_blank">docs</a>. LoLSkinSales isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc </p>
+	<p> Built with love by <a href="http://www.github.com/abaltra" target="_blank">abaltra</a>, powered by <a href="http://alvarotrigo.com/pagePiling/" target="_blank">pagePiling.js</a> and <a href="http://flask.pocoo.org/" target="_blank">Flask</a></p>
+</div>
+
+
+</body>
+</html>

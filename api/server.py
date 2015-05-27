@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import jsonify
+from flask import render_template
 from pymongo import MongoClient
+import requests
 import json
 
 app = Flask(__name__)
@@ -31,6 +33,14 @@ def skinsById(champ_id):
 		return json.dumps({'error': 'Champion not found'}), 404
 	del sale['_id']
 	return json.dumps(sale)
+
+@app.route('/', methods=['GET'])
+def index():
+	data = requests.get('http://lolskinsales.com/skins').content
+	data = json.loads(data)
+	return render_template('index.html',
+		data=data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
