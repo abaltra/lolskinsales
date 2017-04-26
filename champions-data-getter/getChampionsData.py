@@ -3,13 +3,14 @@ import requests
 import json
 import sys
 
-APITOKEN = 'APITOKEN'
-CHAMPIONS_ENDPOINT = 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion?champData=image,skins&api_key=%s' % APITOKEN
+APITOKEN = ''
+CHAMPIONS_ENDPOINT = 'https://na1.api.riotgames.com/lol/static-data/v3/champions?champData=image,skins&api_key=%s' % APITOKEN
 client = MongoClient('localhost', 27017)
 db = client['skinsales']
 champions_collection = db['champions']
 
 def retrieveChampData():
+	print 'Retrieving data from Riot'
 	data = requests.get(CHAMPIONS_ENDPOINT).content
 	data = json.loads(data)
 	version = data['version']
@@ -18,6 +19,7 @@ def retrieveChampData():
 		print 'Data already at latest version, exiting'
 		sys.exit(0)
 	champ_data = data['data']
+	print 'There are %i champions' % len(champ_data)
 	for champ in champ_data:
 		parsed_data = {}
 		parsed_data['name'] = champ_data[champ]['name']
@@ -26,6 +28,7 @@ def retrieveChampData():
 		parsed_data['version'] = version
 		parsed_data['id'] = champ_data[champ]['id']
 		champions_collection.update({'name': parsed_data['name']}, parsed_data, upsert=True)
+	print 'Done'
 
 if __name__ == '__main__':
 	retrieveChampData()

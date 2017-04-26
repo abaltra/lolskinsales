@@ -25,9 +25,10 @@ class SkinGetterSpider(scrapy.Spider):
             self.sales_data = d
 
     def parse(self, response):
-        data = re.findall("<h4>(.+?)</h4>\\n<strike .+?>([0-9]+)</strike> ([0-9]+)", response.body)
+        data = re.findall("<h4>(.+?)</h4>\\n<p><strike style=\"color: #777777\">([0-9]+)</strike> ([0-9]+) RP</p>", response.body)
         items = []
         final_items = []
+        
         for datum in data:
             item = {}
             champion_data = self.champions_collection.find_one({"skins.name": {"$in": [datum[0]]}})
@@ -44,22 +45,5 @@ class SkinGetterSpider(scrapy.Spider):
                     item['skin_loading_url'] = "%s%s_%s.jpg" % (self.LOADING_URL, champion_data['index'], skin['num'])
             items.append(item)
 
-        current_saved_sales = list(self.sales_collection.find({}))
-
-        found_counter = 0
-        for i in xrange(0, len(current_saved_sales)):
-            for j in xrange(0, len(items)):
-                if items[j - 1]['champion_id'] == current_saved_sales[i]['champion_id'] and items[j]['start_date'] == current_saved_sales[i]['start_date'] and items[j]['end_date'] == current_saved_sales[i]['end_date']:
-                    found_counter += 1
-
-        print "Found counter: %i, items: %i" % (found_counter, len(items))
-
-        if found_counter == len(items):
-            #Sales are the same as before, do nothing
-            print "DOing nothing"
-            pass
-        else:
-            print "updating"
-            [self.sales_history_collection.insert_one(item) for item in current_saved_sales] #Move sales to history
-            self.sales_collection.delete_many({}) #Clear current sales
-            [self.sales_collection.insert_one(item) for item in items] #Save current sales
+        self.sales_collection.delete_many({}) #Clear current sales
+        [self.sales_collection.insert_one(item) for item in items] #Save current sales

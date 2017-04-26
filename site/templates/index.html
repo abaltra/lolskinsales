@@ -23,12 +23,12 @@
 		$(document).ready(function() {
 	    	$('#pagepiling').pagepiling({
 	    		menu: '#menu',
-	    		anchors: ['page1', 'page2', 'page3'],
+	    		anchors: ['page1', 'page2', 'page3', 'page4'],
 	    		navigation: {
 		            'textColor': '#f2f2f2',
 		            'bulletsColor': '#ccc',
 		            'position': 'right',
-		            'tooltips': ['{{data[0].champion_name}}', '{{data[1].champion_name}}', '{{data[2].champion_name}}']
+		            'tooltips': ['{{data[0].champion_name}}', '{{data[1].champion_name}}', '{{data[2].champion_name}}', '{{data[3].champion_name}}']
 		        }
 			});
 	    });
@@ -47,7 +47,10 @@
 		background-image: url({{data[2].skin_splash_url}});
 		padding: 6% 0 0 0;
 	}
-
+	#section4{
+		background-image: url({{data[3].skin_splash_url}});
+		padding: 6% 0 0 0;
+	}
     </style>
 
 </head>
@@ -62,6 +65,7 @@
 		<li data-menuanchor="page1" class="active"><a href="#page1">{{data[0].champion_name}}</a></li>
 		<li data-menuanchor="page2"><a href="#page2">{{data[1].champion_name}}</a></li>
 		<li data-menuanchor="page3"><a href="#page3">{{data[2].champion_name}}</a></li>
+		<li data-menuanchor="page4"><a href="#page4">{{data[3].champion_name}}</a></li>
 	</ul>
 
 	<div id="pagepiling">
@@ -81,6 +85,12 @@
 	    	<div class="champData">
 	    		<h1> {{data[2].skin_name}} </h1>
 	    		<h2> Currently at {{data[2].new_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>, down from {{data[2].old_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>! </h2>
+	    	</div>
+	    </div>
+	    <div class="section" id="section4">
+	    	<div class="champData">
+	    		<h1> {{data[3].skin_name}} </h1>
+	    		<h2> Currently at {{data[3].new_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>, down from {{data[3].old_price}} <img src="{{ url_for('static', filename='imgs/rp.png') }}"/>! </h2>
 	    	</div>
 	    </div>
 	</div>
