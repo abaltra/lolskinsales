@@ -25,10 +25,9 @@ class SkinGetterSpider(scrapy.Spider):
             self.sales_data = d
 
     def parse(self, response):
-        data = re.findall("<h4>(.+?)</h4>\\n<p><strike style=\"color: #777777\">([0-9]+)</strike> ([0-9]+) RP</p>", response.body)
+        data = re.findall("<h4>(.+?)</h4>\\n<p><strike style=\"color: #777777\">([0-9]+)</strike>\s+([0-9]+)\s+RP</p>", response.body)
         items = []
         final_items = []
-        
         for datum in data:
             item = {}
             champion_data = self.champions_collection.find_one({"skins.name": {"$in": [datum[0]]}})
